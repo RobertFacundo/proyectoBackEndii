@@ -1,0 +1,35 @@
+{{!-- Contenido de la página principal --}}
+<div class="home-content">
+  <h1>Bienvenido a la Página Principal</h1>
+  <p>Esta aplicación te permite gestionar usuarios y productos.</p>
+
+  <h2>Lista de Usuarios</h2>
+  <ul>
+    {{#each users}}
+    <li>{{this.name}} - {{this.email}}</li>
+    {{/each}}
+  </ul>
+
+  <h3>Agregar Usuario</h3>
+  <form action="/api/users" method="POST">
+    <input type="text" name="name" placeholder="Nombre" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Contraseña" required>
+    <button type="submit">Agregar Usuario</button>
+  </form>
+
+  <h2>Lista de Productos</h2>
+  <ul>
+    {{#each products}}
+    <li>{{this.name}} - ${{this.price}}</li>
+    {{/each}}
+  </ul>
+
+  <h3>Agregar Producto</h3>
+  <form action="/api/products" method="POST">
+    <input type="text" name="name" placeholder="Nombre del Producto" required>
+    <input type="number" name="price" placeholder="Precio" required>
+    <input type="text" name="description" placeholder="Descripción">
+    <button type="submit">Agregar Producto</button>
+  </form>
+</div>
