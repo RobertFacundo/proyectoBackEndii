@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import User from '../models/userModel.js';
+import User from '../dao/models/userModel.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -33,11 +33,17 @@ const jwtOptions = {
 };
 
 passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, done) => {
+    console.log('JWT Payload recibido:', jwt_payload);  // Verificar el payload del JWT
     try {
-        const user = await User.findById(jwt_payload.id);
-        if (!user) return done(null, false);
+        const user = await User.findById(jwt_payload.userId); // Asegúrate de que 'userId' sea el campo correcto
+        if (!user) {
+            console.log('Usuario no encontrado');
+            return done(null, false);
+        }
+        console.log('Usuario autenticado:', user);
         return done(null, user);
     } catch (error) {
-        return done(error, false)
+        console.log('Error en la estrategia JWT:', error);
+        return done(error, false);
     }
 }));

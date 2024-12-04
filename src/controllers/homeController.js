@@ -10,19 +10,3 @@ export const homePage = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-export const addUserOrProduct = async (req, res) => {
-    try {
-        if (req.body.password) {
-            const user = new User(req.body);
-            await user.save();
-        } else {
-            const product = new Product(req.body);
-            await product.save();
-        }
-
-        return homePage(req, res);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-}

@@ -3,18 +3,36 @@
   <h1>Bienvenido a la Página Principal</h1>
   <p>Esta aplicación te permite gestionar usuarios y productos.</p>
 
+  {{!-- Sección de Inicio de Sesión --}}
+  <div class="sign-in-section">
+    <h2>Inicia Sesión</h2>
+    <form action="/api/sessions/login" method="POST">
+      <input type="email" name="email" placeholder="Correo electrónico" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <button type="submit">Ingresar</button>
+    </form>
+    <p>¿Olvidaste tu contraseña? <a href="/password-reset/send-reset">Restablecer contraseña</a></p>
+  </div>
+
   <h2>Lista de Usuarios</h2>
   <ul>
     {{#each users}}
-    <li>{{this.name}} - {{this.email}}</li>
+    <li>{{this.first_name}} - {{this.email}}</li>
     {{/each}}
   </ul>
 
   <h3>Agregar Usuario</h3>
   <form action="/api/users" method="POST">
-    <input type="text" name="name" placeholder="Nombre" required>
+    <input type="text" name="first_name" placeholder="Nombre" required>
+    <input type="text" name="last_name" placeholder="Apellido" required>
     <input type="email" name="email" placeholder="Email" required>
+    <input type="number" name="age" placeholder="Edad" required>
     <input type="password" name="password" placeholder="Contraseña" required>
+    <label for="role">Rol:</label>
+    <select name="role" id="role" required>
+      <option value="user">Usuario</option>
+      <option value="admin">Administrador</option>
+    </select>
     <button type="submit">Agregar Usuario</button>
   </form>
 

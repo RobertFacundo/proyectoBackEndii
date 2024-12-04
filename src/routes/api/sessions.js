@@ -2,24 +2,29 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
-import User from '../../models/userModel.js';
+import User from '../../dao/models/userModel.js';
+import UserDTO from '../../dto/UserDTO.js';
 
 const router = Router();
 
 // Ruta de login, se utilizará Passport para la estrategia de autenticación local
 router.post('/login', (req, res, next) => {
+    console.log('Login request received');
     passport.authenticate('local', { session: false }, (err, user, info) => {
-        console.log(info); 
+        console.log('Passport authentication result:', { err, user, info });
         if (err) {
+            console.error('Error interno del servidor:', err);
             return res.status(500).json({ message: 'Error interno del servidor' });
         }
         if (!user) {
+            console.log('Usuario no encontrado o contraseña incorrecta');
             return res.status(401).json({ message: info.message || 'Usuario o contraseña incorrectos' });
         }
 
         // Si la autenticación es exitosa, generamos el token
         try {
-            const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            console.log('Token generado:', token);
             return res.json({
                 message: 'Login exitoso',
                 token: token
@@ -48,8 +53,9 @@ router.get('/current', (req, res) => {
             if (!user) {
                 return res.status(404).json({ message: 'User Not Found' });
             }
-
-            res.json(user);
+            // Transformar el usuario con el DTO antes de enviarlo
+            const userDTO = new UserDTO(user);
+            res.json(userDTO);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

@@ -1,5 +1,5 @@
 // src/controllers/productController.js
-import Product from '../models/productModel.js';
+import Product from '../dao/models/productModel.js';
 
 // Obtener todos los productos
 export const getProducts = async (req, res) => {
@@ -25,10 +25,24 @@ export const createProduct = async (req, res) => {
 // Obtener un producto por ID
 export const getProductById = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).json({ message: 'Product not found' });
-        res.render('productDetail', product);
+        const { id } = req.params;
+        console.log('ID recibido:', id);
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            console.log('ID inválido');
+            return res.status(400).json({ message: 'Invalid Product ID' });
+        }
+
+        const product = await Product.findById(id);
+        console.log('Producto encontrado:', product);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.render('productDetail', product.toObject());
     } catch (error) {
+        console.error('Error en getProductById:', error.message);
         res.status(500).json({ message: error.message });
     }
 };
