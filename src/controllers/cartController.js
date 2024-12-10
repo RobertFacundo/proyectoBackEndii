@@ -66,7 +66,7 @@ export const purchaseCart = async (req, res) => {
         const notPurchased = [];
 
         console.log('Productos en el carrito:', cart.products);
-        // Procesar cada producto en el carrito
+        
         for (const item of cart.products) {
             const product = item.product;
             if (product.stock >= item.quantity) {
@@ -74,22 +74,20 @@ export const purchaseCart = async (req, res) => {
                 totalAmount += product.price * item.quantity;
                 await product.save();
             } else {
-                notPurchased.push(product._id); // Guardar productos sin suficiente stock
+                notPurchased.push(product._id); 
             }
         }
 
-        // Generar ticket si hay productos comprados
         if (totalAmount > 0) {
             const ticket = new Ticket({
                 code: crypto.randomBytes(16).toString('hex'),
                 amount: totalAmount,
-                purchaser: req.user.email // Suponiendo que tienes el email del usuario en el JWT
+                purchaser: req.user.email 
             });
             console.log('Ticket generado:', ticket);
             await ticket.save();
         }
 
-        // Actualizar el carrito con productos no comprados
         cart.products = cart.products.filter(item => notPurchased.includes(item.product._id));
         await cart.save();
 
