@@ -33,9 +33,9 @@ const jwtOptions = {
 };
 
 passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, done) => {
-    console.log('JWT Payload recibido:', jwt_payload);  // Verificar el payload del JWT
+    console.log('JWT Payload recibido:', jwt_payload);  
     try {
-        const user = await User.findById(jwt_payload.userId); // Asegúrate de que 'userId' sea el campo correcto
+        const user = await User.findById(jwt_payload.userId);
         if (!user) {
             console.log('Usuario no encontrado');
             return done(null, false);

@@ -7,10 +7,8 @@ import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
-// Ruta GET para mostrar el formulario de restablecimiento de contraseña
 router.get('/send-reset', (req, res) => {
-    // Renderiza una vista, por ejemplo, un archivo handlebars o una plantilla.
-    res.render('send-reset');  // Asegúrate de que la vista 'send-reset' esté configurada correctamente.
+    res.render('send-reset'); 
 });
 
 router.post('/send-reset', async (req, res) => {
@@ -39,24 +37,21 @@ router.post('/send-reset', async (req, res) => {
 router.get('/reset-password', async (req, res) => {
     const { token } = req.query;
     console.log("Token recibido en la URL:", token);
-    // Verifica si el token existe
+   
     try {
-        // Verifica si el token existe
         const resetToken = await passwordResetToken.findOne({ token });
         if (!resetToken) {
             console.log("No se encontró el token en la base de datos.");
-            return res.redirect('/send-reset'); // Redirige al formulario de enviar reset
+            return res.redirect('/send-reset'); 
         }
 
-        // Verifica si el token ha expirado
         if (resetToken.expiresAt < new Date()) {
             console.log("Token expirado:", resetToken.expiresAt);
             console.log('Redirigiendo a plantilla de send-reset')
-            return res.redirect('/password-reset/send-reset'); // Redirige al formulario de enviar reset
+            return res.redirect('/password-reset/send-reset');
         }
 
-        // Token válido: renderiza el formulario de restablecimiento de contraseña
-        res.render('reset-password', { token }); // Renderiza la vista con el token
+        res.render('reset-password', { token }); 
     } catch (error) {
         console.error("Error en el proceso de validación del token:", error.message);
         res.status(500).json({ message: 'Error interno del servidor' });
@@ -65,7 +60,7 @@ router.get('/reset-password', async (req, res) => {
 
 router.post('/reset-password', async (req, res) => {
     const { token, newPassword } = req.body;
-    console.log("Token recibido en el body:", token); // Log del token recibido en el body
+    console.log("Token recibido en el body:", token); 
     console.log("Nueva contraseña:", newPassword);
 
     const resetToken = await passwordResetToken.findOne({ token });
@@ -111,6 +106,4 @@ router.post('/resend-reset', async (req, res) => {
     res.json({ message: 'Correo enviado' });
 });
 
-
-// Exporta el router como default
 export default router;

@@ -50,7 +50,6 @@ router.delete('/users/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         
-        // Verificar que el ID proporcionado sea un ObjectId válido
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: 'ID de usuario no válido' });
         }
@@ -74,7 +73,7 @@ router.post('/products', async (req, res) => {
 
     try {
         await product.save();
-        res.json(product.toObject()); // Devuelve el producto recién creado
+        res.json(product.toObject()); 
     } catch (error) {
         res.status(400).json({ message: error.message });
         console.log(error);

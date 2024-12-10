@@ -23,13 +23,13 @@ router.get('/',
 router.post('/',
     passport.authenticate('jwt', { session: false }),
     (req, res, next) => {
-        console.log('Token validado', req.user); // Aquí puedes ver si el token es válido y el usuario es correcto
-        next(); // Esto pasa al siguiente middleware (authorizeRole)
+        console.log('Token validado', req.user); 
+        next(); 
     },
     authorizeRole(['admin']),
     (req, res, next) => {
-        console.log('Usuario tiene acceso adecuado:', req.user); // Verifica que el rol sea 'admin'
-        next(); // Pasa a la creación del producto
+        console.log('Usuario tiene acceso adecuado:', req.user);
+        next(); 
     },
     createProduct);
 

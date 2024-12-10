@@ -1,7 +1,5 @@
-// src/controllers/productController.js
 import Product from '../dao/models/productModel.js';
 
-// Obtener todos los productos
 export const getProducts = async (req, res) => {
     try {
         const products = await Product.find();
@@ -11,7 +9,6 @@ export const getProducts = async (req, res) => {
     }
 };
 
-// Crear un nuevo producto
 export const createProduct = async (req, res) => {
     const product = new Product(req.body);
     try {
@@ -22,7 +19,6 @@ export const createProduct = async (req, res) => {
     }
 };
 
-// Obtener un producto por ID
 export const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -47,7 +43,6 @@ export const getProductById = async (req, res) => {
     }
 };
 
-// Actualizar un producto por ID
 export const updateProduct = async (req, res) => {
     try {
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -58,7 +53,6 @@ export const updateProduct = async (req, res) => {
     }
 };
 
-// Eliminar un producto por ID
 export const deleteProduct = async (req, res) => {
     try {
         const deletedProduct = await Product.findByIdAndDelete(req.params.id);

@@ -19,12 +19,9 @@ import router from './routes/views.js';
 import cartRoutes from './routes/api/cart.js';
 import passwordResetRoutes from './routes/api/passwordReset.js';
 
-//Carga las variables de entorno!!
 dotenv.config();
 
-//inicializa la aplicacion de express
 const app = express();
-//define el puerto en el que se ejecturá la aplicaicon
 const PORT = process.env.PORT || 3000;
 
 // Uso de passport como middleware global para que se ejecute en todas las rutas
@@ -34,11 +31,9 @@ app.use(passport.initialize());
 // Configuracion de handlebars
 // ---------------------------
 
-//obtiene el nombre del archivo actual y su directorio
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename); //define el directorio del archivo actual
+const __dirname = path.dirname(__filename); 
 
-//Configuracion del motor de plantillas handlebars
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
@@ -48,10 +43,9 @@ app.set('views', path.join(__dirname, 'views'));
 //==============
 
 //Middleware para procesar datos JSON
-app.use(express.urlencoded({ extended: true })); //Permite a la aplicacion recibir datos de formularios URL-encoded
-app.use(express.json()); //Permite a la aplicacion recibir datos en forma de JSON
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.json()); 
 
-//middleware cookie-parser para manejar las cookies en las rutas donde se verifican los JWTs.
 app.use(cookieParser());
 
 //======================
@@ -68,8 +62,8 @@ app.use('/password-reset', passwordResetRoutes);
 // Rutas estaticas
 //------------------
 
-//Configura la carpeta publica para servir archivos estaticos
 app.use(express.static(path.join(__dirname, '../public')));
+
 //-----------------------------
 // Conexion a Mongo DB
 //-----------------------------

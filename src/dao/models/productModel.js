@@ -11,6 +11,11 @@ const productSchema = mongoose.Schema({
     },
     description: {
         type: String
+    },
+    stock: {  // Agregar el campo stock
+        type: Number,
+        required: true,
+        default: 1  // Valor por defecto en caso de no especificarse
     }
 });
 

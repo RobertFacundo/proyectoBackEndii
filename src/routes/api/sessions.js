@@ -21,7 +21,6 @@ router.post('/login', (req, res, next) => {
             return res.status(401).json({ message: info.message || 'Usuario o contraseña incorrectos' });
         }
 
-        // Si la autenticación es exitosa, generamos el token
         try {
             const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
             console.log('Token generado:', token);
@@ -35,6 +34,7 @@ router.post('/login', (req, res, next) => {
         }
     })(req, res, next);
 });
+
 // Ruta "current" para obtener los datos del usuario asociado al JWT
 router.get('/current', (req, res) => {
     const token = req.cookies.token || req.headers.authorization.split(' ')[1];
@@ -53,7 +53,7 @@ router.get('/current', (req, res) => {
             if (!user) {
                 return res.status(404).json({ message: 'User Not Found' });
             }
-            // Transformar el usuario con el DTO antes de enviarlo
+            
             const userDTO = new UserDTO(user);
             res.json(userDTO);
         } catch (error) {
